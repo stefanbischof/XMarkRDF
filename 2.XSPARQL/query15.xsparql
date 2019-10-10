@@ -1,0 +1,26 @@
+(:  Q15. Print the keywords in emphasis in annotations of closed auctions. :)
+
+(: Beware: the default namespace has to be the empty namespace 
+           because saxon:parse creates XML in the empty namespace :)
+
+prefix t: <http://xsparql.deri.org/data/>
+declare namespace saxon="http://saxon.sf.net/";
+declare ordering unordered;
+declare variable $rdf external;
+
+for $desc
+from $rdf
+where {
+[] t:auction [a t:ClosedAuction]; t:description $desc
+}
+return
+ for $a in saxon:parse($desc)/parlist/
+   listitem/
+   parlist/
+   listitem/
+   text/
+   emph/
+   keyword/
+   text()
+ return <text>{$a}</text>
+

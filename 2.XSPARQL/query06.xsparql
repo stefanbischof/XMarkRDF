@@ -1,0 +1,14 @@
+(:  Q6. How many items are listed on all continents? :)
+
+prefix : <http://xsparql.deri.org/data/>
+declare ordering unordered;
+declare variable $rdf external;
+
+count(
+for *
+from $rdf
+where {
+$item  :locatedIn [] .
+}
+return $item
+)

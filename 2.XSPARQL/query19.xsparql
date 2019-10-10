@@ -1,0 +1,17 @@
+(:  Q19. Give an alphabetically ordered list of all :)
+(:       items along with their location. :)
+
+prefix : <http://xsparql.deri.org/data/>
+declare ordering unordered;
+declare variable $rdf external;
+
+for * from $rdf
+where {
+[] :name $name ;
+   :location $location ;
+   a :Item .
+   
+}
+order by $name
+return <item name="{$name}">{$location}</item>
+

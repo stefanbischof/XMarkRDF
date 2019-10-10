@@ -1,0 +1,23 @@
+(:  Q16. Return the IDs of those auctions :)
+(:       that have one or more keywords in emphasis. (cf. Q15) :)
+
+prefix t: <http://xsparql.deri.org/data/>
+declare ordering unordered;
+declare variable $rdf external;
+
+for $desc $id
+from $rdf
+where {
+[] t:auction [a t:ClosedAuction; t:seller [t:id $id]]; t:description $desc
+}
+for $a in saxon:parse($desc)
+where
+  fn:not(
+    fn:empty(
+      $a/parlist/listitem/parlist/listitem/text/emph/
+       keyword/
+       text()
+    )
+  )
+return <person id="{$id}"/>
+

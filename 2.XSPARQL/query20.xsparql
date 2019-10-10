@@ -1,0 +1,39 @@
+(:  Q20. Group customers by their :)
+(:       income and output the cardinality of each group. :)
+
+prefix : <http://xsparql.deri.org/data/>
+prefix foaf: <http://xmlns.com/foaf/0.1/>
+declare ordering unordered;
+declare variable $rdf external;
+
+<result>
+  <preferred>
+    { let $l := for * from $rdf 
+        where { [] :income $income . filter($income >= 100000) } 
+        return $income
+      return count($l)
+    }
+  </preferred>
+  <standard>
+    { let $l := for * from $rdf
+        where { [] :income $income . filter($income >= 30000 && $income < 100000) } 
+        return $income
+      return count($l)
+    }
+  </standard>
+  <challenge>
+    { let $l := for * from $rdf
+        where { [] :income $income . filter($income < 30000) } 
+        return $income
+      return count($l)
+    }
+  </challenge>
+  <na>
+    {
+      let $l := for * from $rdf
+        where { $person a foaf:Person . optional { $pp a :PersonalProfile ; :ofPerson $person ;  :income $income }  . filter(!bound($income)) } 
+        return $person
+      return count($l)
+    }
+  </na>
+</result>

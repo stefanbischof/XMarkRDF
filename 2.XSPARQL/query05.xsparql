@@ -1,0 +1,14 @@
+(:  Q5.  How many sold items cost more than 40? :)
+
+prefix : <http://xsparql.deri.org/data/>
+declare ordering unordered;
+declare variable $rdf external;
+
+count( for $price
+   from $rdf
+   where {
+     [ :price $price ] .
+     filter($price >= 40)
+   }
+   return $price
+)

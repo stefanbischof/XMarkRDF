@@ -1,0 +1,21 @@
+#  Q4. List the reserves of those open auctions where a 
+#      certain person issued a bid before another person. 
+
+prefix : <http://xsparql.deri.org/data/>
+prefix foaf: <http://xmlns.com/foaf/0.1/>
+declare ordering unordered;
+declare variable $rdf external;
+
+for $reserve
+from $rdf
+where { $b1 :bidder [ :id "person20" ] ;
+            :order $o1 ;  
+            :onAuction $a .
+        $b2 :bidder [ :id "person51" ] ;
+            :order $o2 ;
+            :onAuction $a .
+        filter($o1 < $o2)
+        $a  :reserve $reserve .
+}
+return <history>{$reserve}</history>
+

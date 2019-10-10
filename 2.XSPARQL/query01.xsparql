@@ -1,0 +1,12 @@
+#  Q1.Return the name of the person with ID `person0'. 
+
+prefix : <http://xsparql.deri.org/data/>
+prefix foaf: <http://xmlns.com/foaf/0.1/>
+declare ordering unordered;
+declare variable $rdf external;
+
+for * 
+from $rdf
+where { $person :id "person0";
+                foaf:name $name }
+return $name 

@@ -1,0 +1,27 @@
+(:  Q9. List the names of persons and the names of the items they bought :)
+(:      in Europe.  (joins person, closed\_auction, item)} :)
+
+prefix : <http://xsparql.deri.org/data/>
+prefix foaf: <http://xmlns.com/foaf/0.1/>
+declare ordering unordered;
+declare variable $rdf external;
+
+for $person $name
+from $rdf
+where {
+  $person foaf:name $name 
+}
+return 
+  <person name="{$name}">
+  { 
+    for *
+    from $rdf
+    where {
+       $ca :buyer $person . 
+       optional { $ca :itemRef $itemRef .
+                  $itemRef :locatedIn [ :name "europe" ] .
+                  $itemRef :name $itemname } . 
+    }
+    return <item>{$itemname}</item>
+  }
+  </person>

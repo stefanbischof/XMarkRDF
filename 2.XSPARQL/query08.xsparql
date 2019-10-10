@@ -1,0 +1,24 @@
+(:  Q8. List the names of persons and the number of items they bought. :)
+(:      (joins person, closed\_auction)} :)
+
+prefix : <http://xsparql.deri.org/data/>
+prefix foaf: <http://xmlns.com/foaf/0.1/>
+declare ordering unordered;
+declare variable $rdf external;
+
+for $person $name
+from $rdf
+where {
+  $person foaf:name $name 
+}
+return <item person="{$name}">
+  {
+    count( for * from $rdf
+      where {
+        $ca :buyer $person .
+      }
+      return $ca
+    )
+  }
+</item>
+

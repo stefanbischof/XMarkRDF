@@ -1,0 +1,15 @@
+#  Q2. Return the initial increases of all open auctions. 
+
+prefix : <http://xsparql.deri.org/data/>
+declare ordering unordered;
+declare variable $rdf external;
+
+for $increase
+from $rdf
+where { $auction a :OpenAuction .
+        optional { $bid :onAuction $auction;
+                        :order 1 ;
+                        :increase $increase } }
+return <increase>{$increase}</increase>
+
+

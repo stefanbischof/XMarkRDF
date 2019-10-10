@@ -1,0 +1,18 @@
+(:  Q17. Which persons don't have a homepage? :)
+
+prefix : <http://xsparql.deri.org/data/>
+prefix foaf: <http://xmlns.com/foaf/0.1/>
+declare ordering unordered;
+declare variable $rdf external;
+
+for $name
+from $rdf
+where {
+  $person foaf:name $name .
+  optional {
+    $person foaf:homepage $homepage.
+  }
+  filter(!bound($homepage)).
+}
+return <person name="{$name}"/>
+

@@ -1,0 +1,29 @@
+#  Q3. Return the IDs of all open auctions whose current 
+#      increase is at least twice as high as the initial increase.
+
+prefix : <http://xsparql.deri.org/data/>
+declare ordering unordered;
+declare variable $rdf external;
+
+for $increase $increase2
+from $rdf
+where { $auction a :OpenAuction .
+        []   :onAuction $auction;
+             :order 1 ;
+             :increase $increase.
+        []   :onAuction $auction;
+             :order $order ;
+             :increase $increase2;
+        filter($increase * 2 <= $increase2 ) 
+        optional {
+          [] :onAuction $auction ; :order $o2 . 
+          filter($o2 > $order)
+        }
+        filter(!bound($o2))
+}
+return   <increase
+  first="{$increase}"
+  last="{$increase2}"/>
+
+
+

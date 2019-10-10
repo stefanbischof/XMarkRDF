@@ -1,0 +1,20 @@
+(:  Q7. How many pieces of prose are in our database?} :)
+
+prefix : <http://xsparql.deri.org/data/>
+prefix foaf: <http://xmlns.com/foaf/0.1/>
+declare ordering unordered;
+declare variable $rdf external;
+
+count (
+for * 
+from $rdf
+where {
+ { $x :description [] .}
+ union
+ { $x foaf:mbox [] . }
+ union
+ { $x a :Annotation . }
+}
+return $x
+)
+

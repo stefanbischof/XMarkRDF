@@ -1,0 +1,15 @@
+(:  Q14. Return the names of all items whose description contains the  :)
+(:       word `gold'. :)
+
+prefix : <http://xsparql.deri.org/data/>
+declare ordering unordered;
+declare variable $rdf external;
+
+for $name from $rdf
+where {
+  $i :description $d .
+  filter regex(str($d), "gold")
+  $i :name $name .
+}
+return $name
+(: return <name>{$name}</name> :)

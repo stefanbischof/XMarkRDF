@@ -1,0 +1,15 @@
+(:  Q13. List the names of items registered in Australia along with  :)
+(:       their descriptions. :)
+
+prefix : <http://xsparql.deri.org/data/>
+declare ordering unordered;
+declare variable $rdf external;
+
+for *
+from $rdf
+where {
+  [] :locatedIn [ a :Region ; :name "australia" ] ;
+     :name $name ;
+     :description $desc .
+}
+return <item name="{$name}">{$desc}</item>

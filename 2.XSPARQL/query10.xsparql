@@ -1,0 +1,59 @@
+(:  Q10. List all persons according to their interest; :)
+(:       use French markup in the result. :)
+
+prefix : <http://xsparql.deri.org/data/>
+prefix foaf: <http://xmlns.com/foaf/0.1/>
+declare ordering unordered;
+declare variable $rdf external;
+
+
+for distinct $catid $category
+  from $rdf
+  where {
+    $category :id $catid.
+    [] :interest $category .
+  }
+return
+let $p := 
+  for *
+  from $rdf
+  where {
+    $profile :ofPerson $person ;
+             :interest $category .
+ 
+    optional { $profile :gender $gender . }
+    optional { $profile :age $age . }
+    optional { $profile :education $education . }
+    optional { $profile :income $income . }
+
+    optional { $person foaf:name $name . }
+    optional { $person foaf:mbox $email . }
+    optional { $person foaf:homepage $homepage . }
+    optional { $person :street $street . }
+    optional { $person :city $city . }
+    optional { $person :country $country . }
+    optional { $person :creditCard $creditcard . }
+  }
+  return
+    <personne>
+      <statistiques>
+        <sexe>{$gender}</sexe>
+        <age>{$age}</age>
+        <education>{$education}</education>
+        <revenu>{$income}</revenu>
+      </statistiques>
+      <coordonnees>
+        <nom>{$name}</nom>
+        <rue>{$street}</rue>
+        <ville>{$city}</ville>
+        <pays>{$country}</pays>
+        <reseau>
+          <courrier>{$email}</courrier>
+          <pagePerso>{$homepage}</pagePerso>
+        </reseau>
+      </coordonnees>
+      <cartePaiement>{$creditcard}</cartePaiement>
+    </personne>
+return
+<categorie>{<id>{$catid}</id>, $p}</categorie>
+

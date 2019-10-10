@@ -1,0 +1,24 @@
+(:  Q12.  For each richer-than-average person, list the number of items  :)
+(:        currently on sale whose price does not exceed 0.02% of the  :)
+(:        person's income. :)
+
+prefix : <http://xsparql.deri.org/data/>
+prefix foaf: <http://xmlns.com/foaf/0.1/>
+declare ordering unordered;
+declare variable $rdf external;
+
+for * from $rdf
+where {
+  $person a foaf:Person .
+  optional { $pa :ofPerson $person ; :income $income ; a :PersonalProfile . }
+}
+let $l :=
+  for * from $rdf
+  where {
+   [] :initialValue $initialValue ; a :OpenAuction .
+   filter($income > 5000 * $initialValue)
+  }
+  return $initialValue
+where $income > 50000
+return <items person="{$income}">{count($l)}</items>
+
